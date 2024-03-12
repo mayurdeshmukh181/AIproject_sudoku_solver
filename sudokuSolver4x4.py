@@ -15,3 +15,26 @@ def is_validmove(grid,row,column,number):
                 return False
     
     return True
+
+def solver(grid, row, column):
+
+    if column==4:
+        if row==3:
+            return True
+        row= row+1
+        column =0
+
+    if grid[row][column]>0:
+        return solver( grid, row,column +1)
+    
+    for num in range(1,5):
+        if is_validmove(grid, row, column,num):
+            grid[row][column]=num
+
+            if solver(grid, row,column+1):
+                return True
+            
+        grid[row][column]=0
+
+    return False
+
