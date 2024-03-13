@@ -37,4 +37,18 @@ def solver(grid, row, column):
         grid[row][column]=0
 
     return False
+grid=[
+    [0, 0,  0, 0],
+    [0, 0,  0, 0],
+    [0, 0,  0, 0],
+    [0, 0,  0, 0]
+]
 
+if solver(grid,0,0):
+    for i in range(4):
+        for j in range(4):
+            print(grid[i][j], end=" ")
+        print()
+
+else:
+    print("No solution exists for this sudoku")
