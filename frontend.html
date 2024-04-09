@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sudoku Board</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+      }
+
+      .sudoku-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+
+      .sudoku-board {
+        display: grid;
+        grid-template-columns: repeat(9, 50px);
+        grid-template-rows: repeat(9, 50px);
+        gap: 1px;
+        border: 2px solid #333;
+        border-radius: 5px;
+        background-color: #fff;
+      }
+
+      .cell {
+        width: 50px;
+        height: 50px;
+        text-align: center;
+        line-height: 50px;
+        font-size: 20px;
+        border: 1px solid #ccc;
+      }
+
+      .cell input {
+        width: 100%;
+        height: 100%;
+        border: none;
+        outline: none;
+        font-size: inherit;
+        text-align: center;
+        background-color: transparent;
+      }
+
+      .cell input:focus {
+        border: 1px solid blue;
+      }
+
+      .timer-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      #timer {
+        font-size: 24px;
+        margin-right: 10px;
+      }
+
+      .number-selector {
+        display: flex;
+        justify-content: center;
+      }
+
+      .number-selector button {
+        margin: 5px;
+        padding: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        border: 1px solid #333;
+        border-radius: 5px;
+        background-color: #f0f0f0;
+      }
+
+      .number-selector button:hover {
+        background-color: #e0e0e0;
+      }
+      .matrix-1,
+      .matrix-2,
+      .matrix-3 {
+        background-color: #ffe0bd; /* Light Orange */
+      }
+
+      .matrix-4,
+      .matrix-5,
+      .matrix-6 {
+        background-color: #c1e1c5; /* Light Green */
+      }
+
+      .matrix-7,
+      .matrix-8,
+      .matrix-9 {
+        background-color: #cfcfcf; /* Light Gray */
+      }
+    </style>
+  </head>
+  <body>
+    <h1 style="margin-bottom: 20px">Sudoku</h1>
+
+    <div class="timer-container">
+      <div id="timer">00:00</div>
+      <button id="startBtn" onclick="startTimer()">Start Timer</button>
+      <button id="resetBtn" onclick="resetTimer()">Reset Timer</button>
+    </div>
+    <div class="sudoku-container">
+      <div class="sudoku-board">
+        <!-- Row 1 -->
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+
+        <!-- Row 2 -->
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+
+        <!-- Add rows 3 to 9 using the same pattern -->
+
+        <!-- Row 3 -->
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <!-- Add rows 4 to 9 using the same pattern -->
+
+        <!-- Row 9 -->
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell"><input type="text" maxlength="1" /></div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+        <div class="cell" style="background-color: #ffe0bd">
+          <input type="text" maxlength="1" />
+        </div>
+      </div>
+    </div>
+    <div class="number-selector">
+      <button onclick="setNumber(1)">1</button>
+      <button onclick="setNumber(2)">2</button>
+      <button onclick="setNumber(3)">3</button>
+      <button onclick="setNumber(4)">4</button>
+      <button onclick="setNumber(5)">5</button>
+      <button onclick="setNumber(6)">6</button>
+      <button onclick="setNumber(7)">7</button>
+      <button onclick="setNumber(8)">8</button>
+      <button onclick="setNumber(9)">9</button>
+    </div>
+    <div class="button-container">
+      <button onclick="solveSudoku()">Solve Sudoku</button>
+    </div>
+
+    <script>
+      let timerInterval;
+      let timerSeconds = 0;
+      const timerDisplay = document.getElementById("timer");
+
+      function startTimer() {
+        clearInterval(timerInterval);
+        timerSeconds = 0;
+        timerInterval = setInterval(updateTimer, 1000);
+      }
+
+      function updateTimer() {
+        timerSeconds++;
+        const minutes = Math.floor(timerSeconds / 60)
+          .toString()
+          .padStart(2, "0");
+        const seconds = (timerSeconds % 60).toString().padStart(2, "0");
+        timerDisplay.textContent = `${minutes}:${seconds}`;
+      }
+
+      function resetTimer() {
+        clearInterval(timerInterval);
+        timerSeconds = 0;
+        timerDisplay.textContent = "00:00";
+      }
+
+      function setNumber(num) {
+        const activeInput = document.querySelector(".cell input:focus");
+        if (activeInput) {
+          activeInput.value = num;
+        }
+      }
+      document.addEventListener("DOMContentLoaded", function () {
+        const cells = document.querySelectorAll(".cell input");
+        cells.forEach((cell) => {
+          cell.addEventListener("click", () => {
+            const num = document.querySelector(
+              ".number-selector button.active"
+            );
+            if (num) {
+              cell.value = num.textContent;
+            }
+          });
+        });
+
+        const numberButtons = document.querySelectorAll(
+          ".number-selector button"
+        );
+        numberButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            numberButtons.forEach((btn) => btn.classList.remove("active"));
+            button.classList.add("active");
+          });
+        });
+      });
+      
+      function solveSudoku() {
+        const sudokuCells = document.querySelectorAll(".cell input");
+        let sudokuGrid = [];
+        sudokuCells.forEach((cell) => {
+          sudokuGrid.push(parseInt(cell.value) || 0); // Convert empty cells to 0
+        });
+
+        // Send the Sudoku grid data to the backend using fetch API
+        fetch("/solve", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ grid: sudokuGrid }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              updateSudokuBoard(data.grid);
+            } else {
+              alert("No solution exists for this Sudoku.");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+      function updateSudokuBoard(grid) {
+        const sudokuCells = document.querySelectorAll(".cell input");
+        sudokuCells.forEach((cell, index) => {
+          cell.value = grid[index];
+        });
+      }
+    </script>
+  </body>
+</html>
