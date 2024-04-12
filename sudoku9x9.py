@@ -1,68 +1,73 @@
-size = 9
-def solve_sudoku(grid):
-    empty_cell = find_empty_cell(grid)
-    if not empty_cell:
-        # If no empty cells left, the puzzle is solved
-        return True
-    
-    row, col = empty_cell
-    
-    for num in range(size):
-        if is_valid_move(grid, row, col, num+1):
-            grid[row][col] = num+1
-            
-            if solve_sudoku(grid):
-                return True
-            # Backtrack if the current placement doesn't lead to a solution
-            grid[row][col] = 0
-    
-    # If no valid candidates for the current cell, trigger backtracking
-    return False
+def get_empty_locations(grid):
+    empty_locations = []
 
-def find_empty_cell(grid):
-    for i in range(size):
-        for j in range(size):
-            if grid[i][j] == 0:
-                return (i, j)
-    return None
+    for i in range(9):
+        for j in range(9):
+            if grid[i][j] == 0:  # Found an empty cell
+                legal_values = get_legal_values(grid, i, j)
+                num_legal_values = len(legal_values)
+                empty_locations.append(((i, j), legal_values, num_legal_values))
 
-def is_valid_move(grid, row, col, num):
-    # Check if 'num' is not already present in the same row, column, or subgrid
-    return (not used_in_row(grid, row, num)
-            and not used_in_col(grid, col, num)
-            and not used_in_subgrid(grid, row - row % 3, col - col % 3, num))
+    # Sort the list of empty locations based on the number of legal values
+    empty_locations.sort(key=lambda x: x[2])
+    return empty_locations
 
-def used_in_row(grid, row, num):
-    return num in grid[row]
 
-def used_in_col(grid, col, num):
-    return any(row[col] == num for row in grid)
+def get_legal_values(grid, row, column):
+    legal_values = set(range(1, 10))  # Initialize with all possible values
 
-def used_in_subgrid(grid, start_row, start_col, num):
+    # Check row and column
+    for i in range(9):
+        if grid[row][i] in legal_values:
+            legal_values.remove(grid[row][i])
+        if grid[i][column] in legal_values:
+            legal_values.remove(grid[i][column])
+
+    # Check 3x3 subgrid
+    start_row = row - row % 3
+    start_column = column - column % 3
     for i in range(3):
         for j in range(3):
-            if grid[i + start_row][j + start_col] == num:
-                return True
+            if grid[start_row + i][start_column + j] in legal_values:
+                legal_values.remove(grid[start_row + i][start_column + j])
+
+    return legal_values
+
+
+def solver(grid):
+    empty_locations = get_empty_locations(grid)
+    if not empty_locations:  # If there are no empty cells, the puzzle is solved
+        return True
+
+    (row, column), legal_values, _ = empty_locations[0]  # Select the empty cell with the least number of legal values
+
+    for num in legal_values:
+        grid[row][column] = num
+
+        if solver(grid):
+            return True
+
+        grid[row][column] = 0  # Backtrack if the current assignment does not lead to a solution
+
     return False
 
-def print_grid(grid):
+
+# Sudoku grid
+grid = [
+    [5, 3, 0, 0, 7, 0, 0, 0, 0],
+    [6, 0, 0, 1, 9, 5, 0, 0, 0],
+    [0, 9, 8, 0, 0, 0, 0, 6, 0],
+    [8, 0, 0, 0, 6, 0, 0, 0, 3],
+    [4, 0, 0, 8, 0, 3, 0, 0, 1],
+    [7, 0, 0, 0, 2, 0, 0, 0, 6],
+    [0, 6, 0, 0, 0, 0, 2, 8, 0],
+    [0, 0, 0, 4, 1, 9, 0, 0, 5],
+    [0, 0, 0, 0, 8, 0, 0, 7, 9]
+]
+
+# Solve Sudoku
+if solver(grid):
     for row in grid:
-        print(" ".join(map(str, row)))
-
-sudoku_grid = [
-        [5, 3, 0, 0, 7, 0, 0, 0, 0],
-        [6, 0, 0, 1, 9, 5, 0, 0, 0],
-        [0, 9, 8, 0, 0, 0, 0, 6, 0],
-        [8, 0, 0, 0, 6, 0, 0, 0, 3],
-        [4, 0, 0, 8, 0, 3, 0, 0, 1],
-        [7, 0, 0, 0, 2, 0, 0, 0, 6],
-        [0, 6, 0, 0, 0, 0, 2, 8, 0],
-        [0, 0, 0, 4, 1, 9, 0, 0, 5],
-        [0, 0, 0, 0, 8, 0, 0, 7, 9]
-    ]
-
-if solve_sudoku(sudoku_grid):
-        print("Sudoku puzzle solved successfully:")
-        print_grid(sudoku_grid)
+        print(row)
 else:
-        print("No solution exists for the given Sudoku puzzle.")
+    print("No solution exists for this sudoku")
